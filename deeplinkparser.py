@@ -274,80 +274,196 @@ class DeeplinkScanner:
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APK Deeplink Report</title>
     <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #2c3e50;
+            --primary-color: #4361ee;
+            --secondary-color: #f8f9fa;
+            --border-color: #e0e0e0;
+            --card-bg: #ffffff;
+            --hover-bg: #f0f2f5;
+            --timestamp-color: #6c757d;
+            --activity-border: #4361ee;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --primary-color: #4895ef;
+            --secondary-color: #1e1e1e;
+            --border-color: #333333;
+            --card-bg: #1e1e1e;
+            --hover-bg: #2d2d2d;
+            --timestamp-color: #a0a0a0;
+            --activity-border: #4895ef;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background: #f5f5f5;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
         }
+
         .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            transition: all 0.3s ease;
         }
+
         h1 {
-            color: #2c3e50;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 2rem;
         }
+
+        h2 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin: 25px 0 15px;
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            color: var(--text-color);
+            font-weight: 500;
+            margin: 10px 0;
+        }
+
         .activity-section {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f8f9fa;
-            border-left: 4px solid #007bff;
-            border-radius: 4px;
+            margin: 25px 0;
+            padding: 20px;
+            background: var(--secondary-color);
+            border-left: 4px solid var(--activity-border);
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
+
         .activity-name {
-            color: #343a40;
-            font-weight: bold;
-            margin-bottom: 10px;
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
         }
+
         .deeplink {
             display: block;
-            padding: 8px 12px;
-            margin: 5px 0;
-            background: #e9ecef;
-            border-radius: 4px;
-            color: #007bff;
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: var(--secondary-color);
+            border-radius: 6px;
+            color: var(--primary-color);
             text-decoration: none;
             word-break: break-all;
+            transition: all 0.2s ease;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            border: 1px solid var(--border-color);
         }
+
         .deeplink:hover {
-            background: #dee2e6;
+            background: var(--hover-bg);
+            transform: translateX(2px);
         }
+
         .timestamp {
-            color: #6c757d;
+            color: var(--timestamp-color);
             font-size: 0.9em;
-            margin-top: 20px;
+            margin: 15px 0;
         }
+
         .exported-section {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid var(--border-color);
         }
+
         .exported-component {
-            padding: 8px 12px;
-            margin: 5px 0;
-            background: #e9ecef;
-            border-radius: 4px;
-            font-family: monospace;
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: var(--secondary-color);
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        .theme-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+                padding-right: 80px;
+            }
+            
+            .theme-toggle {
+                top: 20px;
+                right: 20px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Deeplink Report  </h1> 
-        <h3>{APK_Name}<h3> 
+        <button class="theme-toggle" id="themeToggle">
+            <svg class="theme-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8V16Z" fill="currentColor"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM12 4V8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16V20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z" fill="currentColor"/>
+            </svg>
+            <span>Dark Mode</span>
+        </button>
+        
+        <h1>Deeplink Report</h1>
+        <h3>{APK_Name}</h3>
         
         <div id="timestamp" class="timestamp">
-
             Generated on: <script>document.write(new Date().toLocaleString())</script>
-            
         </div>
         
         <div id="deeplinks">
@@ -360,6 +476,41 @@ class DeeplinkScanner:
             {EXPORTED_PLACEHOLDER}
         </div>
     </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        const themeIcon = themeToggle.querySelector('.theme-icon');
+        const themeText = themeToggle.querySelector('span');
+        
+        // Check for saved theme preference or use preferred color scheme
+        const savedTheme = localStorage.getItem('theme') || 
+                           (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Apply the saved theme
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateButton(savedTheme);
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateButton(newTheme);
+        });
+        
+        function updateButton(theme) {
+            if (theme === 'dark') {
+                themeText.textContent = 'Light Mode';
+                themeIcon.innerHTML = '<path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"/><path d="M11 1H13V4H11V1Z" fill="currentColor"/><path d="M11 20H13V23H11V20Z" fill="currentColor"/><path d="M3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893Z" fill="currentColor"/><path d="M16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364Z" fill="currentColor"/><path d="M1 12H4V10H1V12Z" fill="currentColor"/><path d="M20 12H23V10H20V12Z" fill="currentColor"/><path d="M4.92893 20.4853L3.51472 19.0711L5.63604 16.9497L7.05025 18.364L4.92893 20.4853Z" fill="currentColor"/><path d="M18.364 7.05025L16.9497 5.63604L19.0711 3.51472L20.4853 4.92893L18.364 7.05025Z" fill="currentColor"/>';
+            } else {
+                themeText.textContent = 'Dark Mode';
+                themeIcon.innerHTML = '<path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8V16Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM12 4V8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16V20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z" fill="currentColor"/>';
+            }
+        }
+    </script>
 </body>
 </html>"""  # Copy the HTML content from above
             
